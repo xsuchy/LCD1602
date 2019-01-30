@@ -1,17 +1,22 @@
-# i2cLCD1602
+# LCD1602
 
-makecode I2C LCD1602 package for micro:bit  
+makecode LCD1602 package for micro:bit  
 
-Author: shaoziyang  
-Date:   2018.Mar  
-  
+Author: shaoziyang, Miroslav Suchý  
+Date:   2019.Jan
+
+This code is for LCD1602 using shield from Elecrow:
+
+https://www.elecrow.com/lcd1602-display-for-microbit.html
+https://www.elecrow.com/wiki/index.php?title=LCD1602_for_microbit_shield
+
 ![](lcd.jpg)
 
 ## Add extension
 
 open your microbit makecode project, in Extension, paste  
 
-https://github.com/makecode-packages/i2cLCD1602  
+https://github.com/xsuchy/LCD1602
 
 to search box then search.
 
@@ -19,7 +24,7 @@ to search box then search.
 
 ```
 let item = 0
-I2C_LCD1602.LcdInit(0)
+I2C_LCD1602.LcdInit()
 I2C_LCD1602.ShowString("Hello", 0, 0)
 basic.forever(() => {
     item += 1
@@ -29,16 +34,10 @@ basic.forever(() => {
 ```
 
 
-## I2C Address  
-- PCF8574: 39  
-- PCF8574A: 63  
-- Auto: 0
-
 ## API
 
-- LcdInit(Addr: number)  
+- LcdInit()  
 Initial LCD  
-Addr: I2C Address. If Addr is zero, it will try to recognition correctly address automaticly.  
 
 - ShowNumber(n: number, x: number, y: number)  
 show a number in LCD at given position.  
@@ -61,12 +60,6 @@ turn off LCD
 - clear()  
 clear LCD content  
 
-- BacklightOn()  
-turn on LCD backlight  
-
-- BacklightOff()  
-turn off LCD backlight  
-
 - shl()
 shift left screen
 
@@ -82,11 +75,8 @@ shift right screen
 
 MIT
 
-Copyright (c) 2018, microbit/micropython Chinese community  
-
 ## Supported targets
 
 * for PXT/microbit
 
 
-[From microbit/micropython Chinese community](http://www.micropython.org.cn)
