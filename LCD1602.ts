@@ -12,7 +12,7 @@ namespace LCD1602 {
     let enable: DigitalPin.P2
     let datapins = [DigitalPin.P16, DigitalPin.P15, DigitalPin.P14, DigitalPin.P13]
 
-    # commands
+    // commands
     let LCD_CLEARDISPLAY = 0x01
     let LCD_RETURNHOME = 0x02
     let LCD_ENTRYMODESET = 0x04
@@ -22,13 +22,13 @@ namespace LCD1602 {
     let LCD_SETCGRAMADDR = 0x40
     let LCD_SETDDRAMADDR = 0x80
     
-    # flags for display entry mode
+    // flags for display entry mode
     let LCD_ENTRYRIGHT = 0x00
     let LCD_ENTRYLEFT = 0x02
     let LCD_ENTRYSHIFTINCREMENT = 0x01
     let LCD_ENTRYSHIFTDECREMENT = 0x00
     
-    # flags for display on/ off control
+    // flags for display on/ off control
     let LCD_DISPLAYON = 0x04
     let LCD_DISPLAYOFF = 0x00
     let LCD_CURSORON = 0x02
@@ -36,13 +36,13 @@ namespace LCD1602 {
     let LCD_BLINKON = 0x01
     let LCD_BLINKOFF = 0x00
     
-    # flags for display/ cursor shift
+    // flags for display/ cursor shift
     let LCD_DISPLAYMOVE = 0x08
     let LCD_CURSORMOVE = 0x00
     let LCD_MOVERIGHT = 0x04
     let LCD_MOVELEFT = 0x00
     
-    # flags for function set
+    // flags for function set
     let LCD_8BITMODE = 0x10
     let LCD_4BITMODE = 0x00
     let LCD_2LINE = 0x08
@@ -50,19 +50,13 @@ namespace LCD1602 {
     let LCD_5x10DOTS = 0x04
     let LCD_5x8DOTS = 0x00
 
-    # high level commands    
-    function clear(): void {
-        send(this.LCD_CLEARDISPLAY, 0)
-        basic.pause(2)
-    }
-
     function home(): void {
         send(this.LCD_RETURNHOME, 0)
         basic.pause(2)
     }
 
     function setCursor(col: number, row: number): void {
-        orpart = col
+        let orpart = col
         if (row > 0) {
             orpart = orpart + 0x40
         }
@@ -71,11 +65,11 @@ namespace LCD1602 {
 
     function showText(t: string): void {
         for (let i = 0; i < t.length; i++) {
-            send(t.charCodeAt(c), 1)
+            send(t.charCodeAt(i), 1)
         }
     }
 
-    # mid and low level commands        
+    // mid and low level commands        
     function send(value: number, mode: number): void {
         pins.digitalWritePin(this.rs, mode)
         write4bits(value >> 4)
