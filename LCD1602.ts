@@ -104,7 +104,7 @@ namespace LCD1602 {
     //% blockId="LCD1620_SET_ADDRESS" block="LCD initialize with Address %addr"
     //% weight=100 blockGap=8
     //% parts=LCD1602 trackArgs=0
-    export function LcdInit(Addr: number) {
+    export function LcdInit() {
         // at least 50ms after power on
         basic.pause(50)
         // send rs, enable low - rw is tied to GND
