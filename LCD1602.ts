@@ -8,47 +8,47 @@
  */
 //% weight=20 color=#0fbc11 icon="▀"
 namespace LCD1602 {
-    rs: DigitalPin.P8
-    enable: DigitalPin.P2
+    let rs: DigitalPin.P8
+    let enable: DigitalPin.P2
     let datapins = [DigitalPin.P16, DigitalPin.P15, DigitalPin.P14, DigitalPin.P13]
 
     # commands
-    LCD_CLEARDISPLAY = 0x01
-    LCD_RETURNHOME = 0x02
-    LCD_ENTRYMODESET = 0x04
-    LCD_DISPLAYCONTROL = 0x08
-    LCD_CURSORSHIFT = 0x10
-    LCD_FUNCTIONSET = 0x20
-    LCD_SETCGRAMADDR = 0x40
-    LCD_SETDDRAMADDR = 0x80
+    let LCD_CLEARDISPLAY = 0x01
+    let LCD_RETURNHOME = 0x02
+    let LCD_ENTRYMODESET = 0x04
+    let LCD_DISPLAYCONTROL = 0x08
+    let LCD_CURSORSHIFT = 0x10
+    let LCD_FUNCTIONSET = 0x20
+    let LCD_SETCGRAMADDR = 0x40
+    let LCD_SETDDRAMADDR = 0x80
     
     # flags for display entry mode
-    LCD_ENTRYRIGHT = 0x00
-    LCD_ENTRYLEFT = 0x02
-    LCD_ENTRYSHIFTINCREMENT = 0x01
-    LCD_ENTRYSHIFTDECREMENT = 0x00
+    let LCD_ENTRYRIGHT = 0x00
+    let LCD_ENTRYLEFT = 0x02
+    let LCD_ENTRYSHIFTINCREMENT = 0x01
+    let LCD_ENTRYSHIFTDECREMENT = 0x00
     
     # flags for display on/ off control
-    LCD_DISPLAYON = 0x04
-    LCD_DISPLAYOFF = 0x00
-    LCD_CURSORON = 0x02
-    LCD_CURSOROFF = 0x00
-    LCD_BLINKON = 0x01
-    LCD_BLINKOFF = 0x00
+    let LCD_DISPLAYON = 0x04
+    let LCD_DISPLAYOFF = 0x00
+    let LCD_CURSORON = 0x02
+    let LCD_CURSOROFF = 0x00
+    let LCD_BLINKON = 0x01
+    let LCD_BLINKOFF = 0x00
     
     # flags for display/ cursor shift
-    LCD_DISPLAYMOVE = 0x08
-    LCD_CURSORMOVE = 0x00
-    LCD_MOVERIGHT = 0x04
-    LCD_MOVELEFT = 0x00
+    let LCD_DISPLAYMOVE = 0x08
+    let LCD_CURSORMOVE = 0x00
+    let LCD_MOVERIGHT = 0x04
+    let LCD_MOVELEFT = 0x00
     
     # flags for function set
-    LCD_8BITMODE = 0x10
-    LCD_4BITMODE = 0x00
-    LCD_2LINE = 0x08
-    LCD_1LINE = 0x00
-    LCD_5x10DOTS = 0x04
-    LCD_5x8DOTS = 0x00
+    let LCD_8BITMODE = 0x10
+    let LCD_4BITMODE = 0x00
+    let LCD_2LINE = 0x08
+    let LCD_1LINE = 0x00
+    let LCD_5x10DOTS = 0x04
+    let LCD_5x8DOTS = 0x00
 
     # high level commands    
     function clear(): void {
