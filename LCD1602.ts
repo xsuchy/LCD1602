@@ -8,66 +8,93 @@
  */
 //% weight=20 color=#0fbc11 icon="▀"
 namespace LCD1602 {
-    let i2cAddr: number // 0x3F: PCF8574A, 0x27: PCF8574
-    let BK: number      // backlight control
-    let RS: number      // command/data
+    rs: DigitalPin.P8;
+    enable: DigitalPin.P2;
+    let datapins = [DigitalPin.P16, DigitalPin.P15, DigitalPin.P14, DigitalPin.P13];
 
-    // set LCD reg
-    function setreg(d: number) {
-        pins.i2cWriteNumber(i2cAddr, d, NumberFormat.Int8LE)
+    # commands
+    LCD_CLEARDISPLAY = 0x01
+    LCD_RETURNHOME = 0x02
+    LCD_ENTRYMODESET = 0x04
+    LCD_DISPLAYCONTROL = 0x08
+    LCD_CURSORSHIFT = 0x10
+    LCD_FUNCTIONSET = 0x20
+    LCD_SETCGRAMADDR = 0x40
+    LCD_SETDDRAMADDR = 0x80
+    
+    # flags for display entry mode
+    LCD_ENTRYRIGHT = 0x00
+    LCD_ENTRYLEFT = 0x02
+    LCD_ENTRYSHIFTINCREMENT = 0x01
+    LCD_ENTRYSHIFTDECREMENT = 0x00
+    
+    # flags for display on/ off control
+    LCD_DISPLAYON = 0x04
+    LCD_DISPLAYOFF = 0x00
+    LCD_CURSORON = 0x02
+    LCD_CURSOROFF = 0x00
+    LCD_BLINKON = 0x01
+    LCD_BLINKOFF = 0x00
+    
+    # flags for display/ cursor shift
+    LCD_DISPLAYMOVE = 0x08
+    LCD_CURSORMOVE = 0x00
+    LCD_MOVERIGHT = 0x04
+    LCD_MOVELEFT = 0x00
+    
+    # flags for function set
+    LCD_8BITMODE = 0x10
+    LCD_4BITMODE = 0x00
+    LCD_2LINE = 0x08
+    LCD_1LINE = 0x00
+    LCD_5x10DOTS = 0x04
+    LCD_5x8DOTS = 0x00
+
+    # high level commands    
+    function clear() {
+        send(this.LCD_CLEARDISPLAY, 0)
+        basic.pause(2)
+    }
+
+    function home() {
+        send(this.LCD_RETURNHOME, 0)
+        basic.pause(2)
+    }
+
+    function setCursor(col: number, row: number):
+        orpart = col
+        if (row > 0) {
+            orpart = orpart + 0x40
+        }
+        send(this.LCD_SETDDRAMADDR | orpart, 0)
+
+    function showText(t: string) {
+        for (let i = 0; i < t.length; i++) {
+            send(t.charCodeAt(c), 1)
+        }
+    }
+
+    # mid and low level commands        
+    function send(value: number, mode: number) {
+        pins.digitalWritePin(this.rs, mode)
+        write4bits(value >> 4)
+        write4bits(value)
+    }
+
+    function pulseEnable() {
+        pins.digitalWritePin(this.enable, 0)
+        basic.pause(1)
+        pins.digitalWritePin(this.enable, 1)
+        basic.pause(1)
+        pins.digitalWritePin(this.enable, 0)
         basic.pause(1)
     }
 
-    // send data to I2C bus
-    function set(d: number) {
-        d = d & 0xF0
-        d = d + BK + RS
-        setreg(d)
-        setreg(d + 4)
-        setreg(d)
-    }
-
-    // send command
-    function cmd(d: number) {
-        RS = 0
-        set(d)
-        set(d << 4)
-    }
-
-    // send data
-    function dat(d: number) {
-        RS = 1
-        set(d)
-        set(d << 4)
-    }
-
-    // auto get LCD address
-    function AutoAddr() {
-        let k = true
-        let addr = 0x20
-        let d1 = 0, d2 = 0
-        while (k && (addr < 0x28)) {
-            pins.i2cWriteNumber(addr, -1, NumberFormat.Int32LE)
-            d1 = pins.i2cReadNumber(addr, NumberFormat.Int8LE) % 16
-            pins.i2cWriteNumber(addr, 0, NumberFormat.Int16LE)
-            d2 = pins.i2cReadNumber(addr, NumberFormat.Int8LE)
-            if ((d1 == 7) && (d2 == 0)) k = false
-            else addr += 1
+    function write4bits(value: number) {
+        for (let i = 0; i < 4; i++) {
+            pins.digitalWritePin(datapins[i], (value >> i) & 0x01)
         }
-        if (!k) return addr
-
-        addr = 0x38
-        while (k && (addr < 0x40)) {
-            pins.i2cWriteNumber(addr, -1, NumberFormat.Int32LE)
-            d1 = pins.i2cReadNumber(addr, NumberFormat.Int8LE) % 16
-            pins.i2cWriteNumber(addr, 0, NumberFormat.Int16LE)
-            d2 = pins.i2cReadNumber(addr, NumberFormat.Int8LE)
-            if ((d1 == 7) && (d2 == 0)) k = false
-            else addr += 1
-        }
-        if (!k) return addr
-        else return 0
-
+        pulseEnable()
     }
 
     /**
@@ -78,20 +105,29 @@ namespace LCD1602 {
     //% weight=100 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function LcdInit(Addr: number) {
-        if (Addr == 0) i2cAddr = AutoAddr()
-        else i2cAddr = Addr
-        BK = 8
-        RS = 0
-        cmd(0x33)       // set 4bit mode
+        // at least 50ms after power on
+        basic.pause(50)
+        // send rs, enable low - rw is tied to GND
+        pins.digitalWritePin(this.rs, 0);
+        pins.digitalWritePin(this.enable, 0)
+        write4bits(0x03)
         basic.pause(5)
-        set(0x30)
+        write4bits(0x03)
         basic.pause(5)
-        set(0x20)
+        write4bits(0x03)
+        basic.pause(2)
+        write4bits(0x02)
+        send(this.LCD_FUNCTIONSET | 0x08, 0)
         basic.pause(5)
-        cmd(0x28)       // set mode
-        cmd(0x0C)
-        cmd(0x06)
-        cmd(0x01)       // clear
+        send(this.LCD_FUNCTIONSET | 0x08, 0)
+        basic.pause(5)
+        send(this.LCD_FUNCTIONSET | 0x08, 0)
+        basic.pause(5)
+        send(this.LCD_FUNCTIONSET | 0x08, 0)
+        basic.pause(5)
+        send(this.LCD_DISPLAYCONTROL | this.LCD_DISPLAYON | this.LCD_CURSOROFF | this.LCD_BLINKOFF, 0)
+        clear()
+        send(this.LCD_ENTRYMODESET | this.LCD_ENTRYLEFT | this.LCD_ENTRYSHIFTDECREMENT, 0)
     }
 
     /**
@@ -122,18 +158,8 @@ namespace LCD1602 {
     //% y.min=0 y.max=1
     //% parts=LCD1602 trackArgs=0
     export function ShowString(s: string, x: number, y: number): void {
-        let a: number
-
-        if (y > 0)
-            a = 0xC0
-        else
-            a = 0x80
-        a += x
-        cmd(a)
-
-        for (let i = 0; i < s.length; i++) {
-            dat(s.charCodeAt(i))
-        }
+        setCursor(x, y)
+        showText(s)
     }
 
     /**
@@ -143,7 +169,8 @@ namespace LCD1602 {
     //% weight=81 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function on(): void {
-        cmd(0x0C)
+        send(this.LCD_DISPLAYON, 0)
+        basic.pause(2)
     }
 
     /**
@@ -153,7 +180,8 @@ namespace LCD1602 {
     //% weight=80 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function off(): void {
-        cmd(0x08)
+        send(this.LCD_DISPLAYOFF, 0)
+        basic.pause(2)
     }
 
     /**
@@ -163,29 +191,8 @@ namespace LCD1602 {
     //% weight=85 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function clear(): void {
-        cmd(0x01)
-    }
-
-    /**
-     * turn on LCD backlight
-     */
-    //% blockId="LCD1620_BACKLIGHT_ON" block="turn on backlight"
-    //% weight=71 blockGap=8
-    //% parts=LCD1602 trackArgs=0
-    export function BacklightOn(): void {
-        BK = 8
-        cmd(0)
-    }
-
-    /**
-     * turn off LCD backlight
-     */
-    //% blockId="LCD1620_BACKLIGHT_OFF" block="turn off backlight"
-    //% weight=70 blockGap=8
-    //% parts=LCD1602 trackArgs=0
-    export function BacklightOff(): void {
-        BK = 0
-        cmd(0)
+        send(this.LCD_CLEARDISPLAY, 0)
+        basic.pause(2)
     }
 
     /**
@@ -195,7 +202,8 @@ namespace LCD1602 {
     //% weight=61 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function shl(): void {
-        cmd(0x18)
+        send(this.LCD_MOVELEFT, 0)
+        basic.pause(2)
     }
 
     /**
@@ -205,6 +213,7 @@ namespace LCD1602 {
     //% weight=60 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function shr(): void {
-        cmd(0x1C)
+        send(this.LCD_MOVERIGHT, 0)
+        basic.pause(2)
     }
 }

@@ -26,7 +26,7 @@
     "numberOfPins": 4,
     "instantiation": {
       "kind": "function",
-      "fullyQualifiedName": "LCD1602.LcdInit,LCD1602.ShowNumber,LCD1602.ShowString,LCD1602.on,LCD1602.off,LCD1602.clear,LCD1602.BacklightOn,LCD1602.BacklightOff,LCD1602.shl,LCD1602.shr",
+      "fullyQualifiedName": "LCD1602.LcdInit,LCD1602.ShowNumber,LCD1602.ShowString,LCD1602.on,LCD1602.off,LCD1602.clear,LCD1602.shl,LCD1602.shr",
       "argumentRoles": [
         {
           "pinInstantiationIdx": 0
