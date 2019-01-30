@@ -76,6 +76,8 @@ shift right screen
 
 MIT
 
+Based on https://github.com/makecode-extensions/i2cLCD1602
+
 ## Supported targets
 
 * for PXT/microbit
