@@ -1,6 +1,6 @@
 {
     "name": "LCD1602",
-    "version": "1.5.0",
+    "version": "1.5.1",
     "description": "makecode LCD1602 extension for micro:bit",
     "license": "MIT",
     "dependencies": {
