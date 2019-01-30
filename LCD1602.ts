@@ -8,9 +8,9 @@
  */
 //% weight=20 color=#0fbc11 icon="▀"
 namespace LCD1602 {
-    rs: DigitalPin.P8;
-    enable: DigitalPin.P2;
-    let datapins = [DigitalPin.P16, DigitalPin.P15, DigitalPin.P14, DigitalPin.P13];
+    rs: DigitalPin.P8
+    enable: DigitalPin.P2
+    let datapins = [DigitalPin.P16, DigitalPin.P15, DigitalPin.P14, DigitalPin.P13]
 
     # commands
     LCD_CLEARDISPLAY = 0x01
@@ -51,37 +51,38 @@ namespace LCD1602 {
     LCD_5x8DOTS = 0x00
 
     # high level commands    
-    function clear() {
+    function clear(): void {
         send(this.LCD_CLEARDISPLAY, 0)
         basic.pause(2)
     }
 
-    function home() {
+    function home(): void {
         send(this.LCD_RETURNHOME, 0)
         basic.pause(2)
     }
 
-    function setCursor(col: number, row: number):
+    function setCursor(col: number, row: number): void {
         orpart = col
         if (row > 0) {
             orpart = orpart + 0x40
         }
         send(this.LCD_SETDDRAMADDR | orpart, 0)
+    }
 
-    function showText(t: string) {
+    function showText(t: string): void {
         for (let i = 0; i < t.length; i++) {
             send(t.charCodeAt(c), 1)
         }
     }
 
     # mid and low level commands        
-    function send(value: number, mode: number) {
+    function send(value: number, mode: number): void {
         pins.digitalWritePin(this.rs, mode)
         write4bits(value >> 4)
         write4bits(value)
     }
 
-    function pulseEnable() {
+    function pulseEnable(): void {
         pins.digitalWritePin(this.enable, 0)
         basic.pause(1)
         pins.digitalWritePin(this.enable, 1)
@@ -90,7 +91,7 @@ namespace LCD1602 {
         basic.pause(1)
     }
 
-    function write4bits(value: number) {
+    function write4bits(value: number): void {
         for (let i = 0; i < 4; i++) {
             pins.digitalWritePin(datapins[i], (value >> i) & 0x01)
         }
