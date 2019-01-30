@@ -1,7 +1,7 @@
 {
-  "LCD1602_I2C": {
+  "LCD1602": {
     "visual": {
-      "image": "parts/LCD1602_I2C.svg",
+      "image": "parts/LCD1602.svg",
       "width": 227,
       "height": 102,
       "pinDistance": 7.2,
@@ -26,7 +26,7 @@
     "numberOfPins": 4,
     "instantiation": {
       "kind": "function",
-      "fullyQualifiedName": "I2C_LCD1602.LcdInit,I2C_LCD1602.ShowNumber,I2C_LCD1602.ShowString,I2C_LCD1602.on,I2C_LCD1602.off,I2C_LCD1602.clear,I2C_LCD1602.BacklightOn,I2C_LCD1602.BacklightOff,I2C_LCD1602.shl,I2C_LCD1602.shr",
+      "fullyQualifiedName": "LCD1602.LcdInit,LCD1602.ShowNumber,LCD1602.ShowString,LCD1602.on,LCD1602.off,LCD1602.clear,LCD1602.BacklightOn,LCD1602.BacklightOff,LCD1602.shl,LCD1602.shr",
       "argumentRoles": [
         {
           "pinInstantiationIdx": 0
