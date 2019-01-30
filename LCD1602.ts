@@ -51,7 +51,7 @@ namespace LCD1602 {
     let LCD_5x8DOTS = 0x00
 
     function home(): void {
-        send(this.LCD_RETURNHOME, 0)
+        send(LCD_RETURNHOME, 0)
         basic.pause(2)
     }
 
@@ -60,7 +60,7 @@ namespace LCD1602 {
         if (row > 0) {
             orpart = orpart + 0x40
         }
-        send(this.LCD_SETDDRAMADDR | orpart, 0)
+        send(LCD_SETDDRAMADDR | orpart, 0)
     }
 
     function showText(t: string): void {
@@ -71,17 +71,17 @@ namespace LCD1602 {
 
     // mid and low level commands        
     function send(value: number, mode: number): void {
-        pins.digitalWritePin(this.rs, mode)
+        pins.digitalWritePin(rs, mode)
         write4bits(value >> 4)
         write4bits(value)
     }
 
     function pulseEnable(): void {
-        pins.digitalWritePin(this.enable, 0)
+        pins.digitalWritePin(enable, 0)
         basic.pause(1)
-        pins.digitalWritePin(this.enable, 1)
+        pins.digitalWritePin(enable, 1)
         basic.pause(1)
-        pins.digitalWritePin(this.enable, 0)
+        pins.digitalWritePin(enable, 0)
         basic.pause(1)
     }
 
@@ -103,8 +103,8 @@ namespace LCD1602 {
         // at least 50ms after power on
         basic.pause(50)
         // send rs, enable low - rw is tied to GND
-        pins.digitalWritePin(this.rs, 0);
-        pins.digitalWritePin(this.enable, 0)
+        pins.digitalWritePin(rs, 0);
+        pins.digitalWritePin(enable, 0)
         write4bits(0x03)
         basic.pause(5)
         write4bits(0x03)
@@ -112,17 +112,17 @@ namespace LCD1602 {
         write4bits(0x03)
         basic.pause(2)
         write4bits(0x02)
-        send(this.LCD_FUNCTIONSET | 0x08, 0)
+        send(LCD_FUNCTIONSET | 0x08, 0)
         basic.pause(5)
-        send(this.LCD_FUNCTIONSET | 0x08, 0)
+        send(LCD_FUNCTIONSET | 0x08, 0)
         basic.pause(5)
-        send(this.LCD_FUNCTIONSET | 0x08, 0)
+        send(LCD_FUNCTIONSET | 0x08, 0)
         basic.pause(5)
-        send(this.LCD_FUNCTIONSET | 0x08, 0)
+        send(LCD_FUNCTIONSET | 0x08, 0)
         basic.pause(5)
-        send(this.LCD_DISPLAYCONTROL | this.LCD_DISPLAYON | this.LCD_CURSOROFF | this.LCD_BLINKOFF, 0)
+        send(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF, 0)
         clear()
-        send(this.LCD_ENTRYMODESET | this.LCD_ENTRYLEFT | this.LCD_ENTRYSHIFTDECREMENT, 0)
+        send(LCD_ENTRYMODESET | LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT, 0)
     }
 
     /**
@@ -164,7 +164,7 @@ namespace LCD1602 {
     //% weight=81 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function on(): void {
-        send(this.LCD_DISPLAYON, 0)
+        send(LCD_DISPLAYON, 0)
         basic.pause(2)
     }
 
@@ -175,7 +175,7 @@ namespace LCD1602 {
     //% weight=80 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function off(): void {
-        send(this.LCD_DISPLAYOFF, 0)
+        send(LCD_DISPLAYOFF, 0)
         basic.pause(2)
     }
 
@@ -186,7 +186,7 @@ namespace LCD1602 {
     //% weight=85 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function clear(): void {
-        send(this.LCD_CLEARDISPLAY, 0)
+        send(LCD_CLEARDISPLAY, 0)
         basic.pause(2)
     }
 
@@ -197,7 +197,7 @@ namespace LCD1602 {
     //% weight=61 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function shl(): void {
-        send(this.LCD_MOVELEFT, 0)
+        send(LCD_MOVELEFT, 0)
         basic.pause(2)
     }
 
@@ -208,7 +208,7 @@ namespace LCD1602 {
     //% weight=60 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function shr(): void {
-        send(this.LCD_MOVERIGHT, 0)
+        send(LCD_MOVERIGHT, 0)
         basic.pause(2)
     }
 }
