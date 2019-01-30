@@ -8,6 +8,7 @@ Date:   2019.Jan
 This code is for LCD1602 using shield from Elecrow:
 
 https://www.elecrow.com/lcd1602-display-for-microbit.html
+
 https://www.elecrow.com/wiki/index.php?title=LCD1602_for_microbit_shield
 
 ![](lcd.jpg)
