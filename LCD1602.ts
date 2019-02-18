@@ -93,8 +93,7 @@ namespace LCD1602 {
     }
 
     /**
-     * initial LCD, set I2C address. Address is 39/63 for PCF8574/PCF8574A
-     * @param Addr is i2c address for LCD, eg: 0, 39, 63. 0 is auto find address
+     * initial LCD
      */
     //% blockId="LCD1620_SET_ADDRESS" block="LCD initialize"
     //% weight=100 blockGap=8
@@ -187,6 +186,28 @@ namespace LCD1602 {
     //% parts=LCD1602 trackArgs=0
     export function clear(): void {
         send(LCD_CLEARDISPLAY, 0)
+        basic.pause(2)
+    }
+
+    /**
+     * cursor off
+     */
+    //% blockId="LCD1620_CURSOR_OFF" block="turn off cursor"
+    //% weight=50 blockGap=8
+    //% parts=LCD1602 trackArgs=0
+    export function cursor_off(): void {
+        send(LCD_DISPLAYCONTROL | LCD_CURSOROFF, 0)
+        basic.pause(2)
+    }
+
+    /**
+     * cursor on
+     */
+    //% blockId="LCD1620_CURSOR_ON" block="turn on cursor"
+    //% weight=51 blockGap=8
+    //% parts=LCD1602 trackArgs=0
+    export function cursor_on(): void {
+        send(LCD_DISPLAYCONTROL | LCD_CURSORON, 0)
         basic.pause(2)
     }
 
