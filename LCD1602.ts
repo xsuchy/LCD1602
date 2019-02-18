@@ -8,8 +8,8 @@
  */
 //% weight=20 color=#0fbc11 icon="▀"
 namespace LCD1602 {
-    let rs: DigitalPin.P8
-    let enable: DigitalPin.P2
+    let rs = DigitalPin.P8
+    let enable = DigitalPin.P2
     let datapins = [DigitalPin.P16, DigitalPin.P15, DigitalPin.P14, DigitalPin.P13]
 
     // commands
