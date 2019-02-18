@@ -164,7 +164,7 @@ namespace LCD1602 {
     //% weight=81 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function on(): void {
-        send(LCD_DISPLAYON, 0)
+        send(LCD_DISPLAYCONTROL | LCD_DISPLAYON, 0)
         basic.pause(2)
     }
 
@@ -175,7 +175,7 @@ namespace LCD1602 {
     //% weight=80 blockGap=8
     //% parts=LCD1602 trackArgs=0
     export function off(): void {
-        send(LCD_DISPLAYOFF, 0)
+        send(LCD_DISPLAYCONTROL | LCD_DISPLAYOFF, 0)
         basic.pause(2)
     }
 
